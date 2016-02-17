@@ -1,20 +1,16 @@
 <?php 
 //http://stackoverflow.com/questions/9132144/how-can-i-automatically-deploy-my-app-after-a-git-push-github-and-node-js
-
-var_dump($_POST);
-var_dump($_REQUEST);
-
-
-if ( $_POST['payload'] ) {
-	$payload = json_decode($_POST['Payload'], true);
+try
+{
+  $payload = json_decode($_REQUEST['payload']);
 }
-
-echo 'test';
-echo $payload['ref'];
-
-//log the request 2
-file_put_contents('logs/github.txt', $payload['ref'], FILE_APPEND);
-file_put_contents('logs/github.txt', 'test', FILE_APPEND);
+catch(Exception $e)
+{
+  exit(0);
+}
+echo $payload->ref;
+//log the request
+file_put_contents('logs/github.txt', print_r($payload, TRUE), FILE_APPEND);
 
 if ($payload->ref === 'refs/heads/master')
 {
